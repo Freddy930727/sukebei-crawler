@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options 
 import time
+from os import path
 
 date="2021-"
 month=input("which month is it?")
@@ -18,7 +19,7 @@ num=int(num)
 timee="d"
 
 options = webdriver.ChromeOptions()
-options.add_extension("C:\\Users\\fre93\\Desktop\\sukebei crawler\\betternet vpn\\6.4.7_0.crx")
+options.add_extension(path.abspath('.\6.4.7_0.crx'))
 driver = webdriver.Chrome(options=options)
 time.sleep(4)
 driver.get("chrome-extension://gjknjjomckknofjidppipffbpoekiipm/panel/index.html")
