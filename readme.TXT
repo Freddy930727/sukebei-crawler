@@ -13,7 +13,8 @@ readme v1 2020/2/21
 8.有問題的話可以email我(930727fre@gmail.com)，如果你跟我在同個群組，也可以直接私訊我
 
 pip list 打包
-desc&有誤
+page maximum 可能用按下下一頁的方法解決
+tr可能不是75個
 comment_check()可能有更好、更嚴謹的寫法
 headless模式
 You've exceeded the maximum number of pages. Please make your search query less broad.

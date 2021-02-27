@@ -3,16 +3,24 @@ from time import sleep
 from os import path
 from datetime import date
 from threading import Thread
-import chromedriver_autoinstaller
-chromedriver_autoinstaller.install()#not functioning
-print("jupyter test")
-if(input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")=='1'):
+#import chromedriver_autoinstaller
+#chromedriver_autoinstaller.install()#not functioning
+temp=input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")
+while(temp!="1" and temp!="2"):
+    print("please input 1 or 2")#highlight
+    temp=input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")
+
+if(temp=="1"):
     keyword='"'+input("please input the keyword?")+'"'
 else:
     keyword=0
-if(input("time filter ,1 for yes /2 for no (search for all time)?")=='1'):
+temp=input("time filter ,1 for yes /2 for no (search for all time)?")
+while(temp!="1" and temp!="2"):
+    print("please input 1 or 2")#highlight
+    temp=input("time filter ,1 for yes /2 for no (search for all time)?")
+if(temp=="1"):
     asktime=True
-    date=str(date.today().year)+'-'
+    date=str(date.today().year)+"-"
     month =int(input("which month is it?"))
     if month<10:
         month="0"+str(month)
@@ -26,7 +34,16 @@ if(input("time filter ,1 for yes /2 for no (search for all time)?")=='1'):
 else:
     asktime=False
 num = input("how many torrents do you require? if you don't have any idea please input -1,and it will crwal until you close the program manually")
+num=int(num)
+while(num==0 or num<-1):
+    print("please input a number which is greater than 0 or just input -1")
+print("which category would you prefer?")
 category=input("(1)all categories (2)real life videos (3)anime (4)manga (5)pictures (6)doujinshi")
+category=int(category)
+while(category>6 or category<1):
+    print("please input a number between 1 and 6")
+    category=input("(1)all categories (2)real life videos (3)anime (4)manga (5)pictures (6)doujinshi")
+    
 #magnet_ask=input("(1)download by .torrent (2)download by magnet") #not complete yet
 magnet_ask="1"
 url="https://sukebei.nyaa.si/"
@@ -35,13 +52,12 @@ if keyword!=0:
 else:
     url=url+"?s=seeders&o=desc"
 url=url+"&p=1"
-num=int(num)
 timee="d"#not sure if it can be deleted
 temp1=0
 thread_stop=False
 
 def animation():
-    print("crawling...,please wait.",end='')
+    print("crawling...,please wait.",end="")
     animation = "|/-\\"
     idx=0
     while not thread_stop:
@@ -49,21 +65,37 @@ def animation():
         idx += 1
         sleep(0.1)
     print()
+def badway_check():
+    if(url==driver.title):
+        x=7
+        num=1
+        return
+    while not "Sukebei" in driver.title:
+        sleep(2)
+        driver.get(url)
+        sleep(3)
+def maximum_check():
+    if not "Sukebei" in driver.title:
+        num=1#forcefully stop crawling
+        return True
 Thread(target=animation).start()
 
 
 driver_path = path.abspath('.\chromedriver.exe')
 option = webdriver.ChromeOptions()
 driver = webdriver.Chrome(driver_path, options=option)
-option.add_argument('-headless')#not sure
+option.add_argument("-headless")#not sure
 driver.implicitly_wait(10)
 driver.get(url)
 
-def badway_check():
-    while not "Sukebei" in driver.title:
-        sleep(2)
-        driver.get(url)
-        sleep(3)
+j=1
+k=str(j)
+token=0
+x=1#the page you are crawling #remember
+badway_check()
+thread_stop=True
+
+category=str(category)
 
 if category=="1":
     category="all categories"
@@ -77,11 +109,7 @@ elif category=="5":
     category="Art - Pictures"
 elif category=="6":
     category="Art - Doujinshi"
-j=1
-k=str(j)
-token=0
-x=1#the page you are crawling #remember
-badway_check()
+
 
 def time_filter():
     temp="//tr["+k+"]/td[5]"
@@ -107,30 +135,30 @@ def comment_check():
     temp="//tr["+k+"]/td[2]/a"
     if "comments" in driver.find_element_by_xpath(temp).get_attribute("title"):#not sure
         #print("found comment,its j is",end='')
-        print(str(j),end='')
+        print(str(j),end="")
         temp="//tr["+k+"]/td[2]/a[2]"
     print(driver.find_element_by_xpath(temp).get_attribute("title"))
 
-thread_stop=True
-print(url)
 while True:
     if token==num:
         print("mission completed")
         break
-    if j==76:
-        x=x+7    #flip the page #remember
+    if j==76:        
         j=1
-        temp=0
+        temp=1
         temp1=x
         while temp1>=10:
             temp=temp+1
             temp1=temp1/10
+            
         print(temp)
-        url=url[:-(temp+4)]+"&p="+str(x)
+        url=url[:-(temp+3)]
+        x=x+1   #flip the page #remember
+        url=url+"&p="+str(x)
         driver.get(url)
         badway_check()
         print(url)
-        if x==7 and num!=-1:        #the number can be edit,if you are more patient,you can change it into 15~30
+        if maximum_check() and num!=-1:        #the number can be edit,if you are more patient,you can change it into 15~30
             print("i can only find "+str(token)+" torrents,there are "+str(num-token)+" left")
             break
     k=str(j)
@@ -141,12 +169,11 @@ while True:
             elif magnet_ask=="2":
                 temp="//tr["+k+"]/td[3]/a[2]"
             driver.find_element_by_xpath(temp).click()
-            print(str(token+1)+". ",end = '')
+            print(str(token+1)+". ",end = "")
             comment_check()
             token=token+1
     j=j+1
 driver.get("chrome://downloads/")
 sleep(7) #wait for the download finish completely,if your internet is fast enough you can just delete this line
-
 
 
