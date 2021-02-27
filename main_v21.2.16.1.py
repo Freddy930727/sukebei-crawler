@@ -5,6 +5,7 @@ from datetime import date
 from threading import Thread
 import chromedriver_autoinstaller
 chromedriver_autoinstaller.install()#not functioning
+print("jupyter test")
 if(input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")=='1'):
     keyword='"'+input("please input the keyword?")+'"'
 else:

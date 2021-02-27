@@ -5,11 +5,11 @@ readme v1 2020/2/21
 注意事項:
 1.exe只有windows 64位元的電腦才能執行，我日後會處理(mac我不確定，因為我是用win10)
 2.chrome要更新到最新版本，開這個網站會自動更新chrome://settings/help
-3.chrome driver要更新到最新版本，去https://chromedriver.chromium.org/，找到符合你作業系統的下載下來，解壓縮，直到剩下一個叫chromedriver.exe的檔案，複製貼上到這份txt的資料夾，如果電腦問說要不要覆蓋掉舊的檔案，請按是。
+3.chrome driver要更新到最新版本，去https://chromedriver.chromium.org/ ，找到符合你作業系統的下載下來，解壓縮，直到剩下一個叫chromedriver.exe的檔案，複製貼上到這份txt的資料夾，如果電腦問說要不要覆蓋掉舊的檔案，請按是。
 4.家裡有色情守門員的人有兩種選擇，一個是電腦直接掛vpn，另外一個是用cus_main.exe ，這裡面會自動幫你連vpn，但問題是那vpn的速度很不穩定，有很高機率會失敗或斷線，所以建議用第一個方法
 5.防毒軟體會亂刪東西，解決方法就是把防毒軟體暫時關掉，並把被他刪掉的檔案還原或重新下載，如果他沒辦法還原你就重新解壓所吧。
 6.下載好torrent的位置如同你chrome下載預設的位置
-7.github:https://github.com/Freddy930727/sukebei-crawler，有興趣的可以參考
+7.github:https://github.com/Freddy930727/sukebei-crawler ，有興趣的可以參考
 8.有問題的話可以email我(930727fre@gmail.com)，如果你跟我在同個群組，也可以直接私訊我
 
 pip list 打包
