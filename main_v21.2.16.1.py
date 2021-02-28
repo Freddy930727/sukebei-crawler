@@ -1,10 +1,28 @@
 from selenium import webdriver
 from time import sleep
 from os import path
+from os import mkdir
 from datetime import date
 from threading import Thread
 #import chromedriver_autoinstaller
 #chromedriver_autoinstaller.install()#not functioning
+from pathlib import Path
+download_path=str(path.join(Path.home(), "Downloads"))
+temp=1
+download_path=download_path+"\downloads_of_sukebei-crawler"+" ("+str(temp)+")"
+for i in range(13):
+    while(path.exists(download_path)):
+        temp2=str(temp)
+        temp1=1
+        while(temp>=10):
+            temp1=temp1+1
+            temp=temp/10
+        temp=int(temp2)+1
+        download_path=download_path[:-(temp1+1)]
+        temp=int(temp2)
+        download_path=download_path+str(temp2)+")"
+    print(" "+download_path)
+    mkdir(download_path)
 temp=input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")
 while(temp!="1" and temp!="2"):
     print("please input 1 or 2")#highlight
@@ -67,7 +85,7 @@ def animation():
     print()
 def badway_check():
     if(url==driver.title):
-        x=7
+        page=7
         num=1
         return
     while not "Sukebei" in driver.title:
@@ -78,20 +96,23 @@ def maximum_check():
     if not "Sukebei" in driver.title:
         num=1#forcefully stop crawling
         return True
+
 Thread(target=animation).start()
 
 
-driver_path = path.abspath('.\chromedriver.exe')
 option = webdriver.ChromeOptions()
-driver = webdriver.Chrome(driver_path, options=option)
-option.add_argument("-headless")#not sure
+#option.headless = True#remember
+option.add_argument('blink-settings=imagesEnabled=false')
+prefs = {"download.default_directory" : download_path}
+option.add_experimental_option("prefs",prefs)
+driver = webdriver.Chrome(path.abspath('.\chromedriver.exe'), options=option)
 driver.implicitly_wait(10)
 driver.get(url)
 
 j=1
 k=str(j)
 token=0
-x=1#the page you are crawling #remember
+page=1#the page you are crawling #remember
 badway_check()
 thread_stop=True
 
@@ -138,6 +159,10 @@ def comment_check():
         print(str(j),end="")
         temp="//tr["+k+"]/td[2]/a[2]"
     print(driver.find_element_by_xpath(temp).get_attribute("title"))
+def current_page_check():
+    while(url!=driver.current_url):
+        sleep(2)
+        driver.get(url)
 
 while True:
     if token==num:
@@ -146,15 +171,14 @@ while True:
     if j==76:        
         j=1
         temp=1
-        temp1=x
+        temp1=page
         while temp1>=10:
             temp=temp+1
             temp1=temp1/10
-            
         print(temp)
         url=url[:-(temp+3)]
-        x=x+1   #flip the page #remember
-        url=url+"&p="+str(x)
+        page=page+1   #flip the page #remember
+        url=url+"&p="+str(page)
         driver.get(url)
         badway_check()
         print(url)
@@ -169,10 +193,12 @@ while True:
             elif magnet_ask=="2":
                 temp="//tr["+k+"]/td[3]/a[2]"
             driver.find_element_by_xpath(temp).click()
+            current_page_check()
             print(str(token+1)+". ",end = "")
             comment_check()
             token=token+1
     j=j+1
+option.headless = False
 driver.get("chrome://downloads/")
 sleep(7) #wait for the download finish completely,if your internet is fast enough you can just delete this line
 
