@@ -12,11 +12,11 @@ readme v1 2020/2/21
 7.github:https://github.com/Freddy930727/sukebei-crawler ，有興趣的可以參考
 8.有問題的話可以email我(930727fre@gmail.com)，如果你跟我在同個群組，也可以直接私訊我
 
-pip list 打包
+animation 要修改(最後等待下載時還會用到)
+找機會測試crdownload sleep()
 page maximum 可能用按下下一頁的方法解決
 tr可能不是75個
 comment_check()可能有更好、更嚴謹的寫法
-headless模式
 You've exceeded the maximum number of pages. Please make your search query less broad.
 用txt比對下載過的檔案，避免重複下載
 torrent 也有可能bad gate，好像趕緊手動案返回就可以補救

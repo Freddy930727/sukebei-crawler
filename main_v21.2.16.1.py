@@ -2,6 +2,7 @@ from selenium import webdriver
 from time import sleep
 from os import path
 from os import mkdir
+from os import listdir
 from datetime import date
 from threading import Thread
 #import chromedriver_autoinstaller
@@ -10,19 +11,18 @@ from pathlib import Path
 download_path=str(path.join(Path.home(), "Downloads"))
 temp=1
 download_path=download_path+"\downloads_of_sukebei-crawler"+" ("+str(temp)+")"
-for i in range(13):
-    while(path.exists(download_path)):
-        temp2=str(temp)
-        temp1=1
-        while(temp>=10):
-            temp1=temp1+1
-            temp=temp/10
-        temp=int(temp2)+1
-        download_path=download_path[:-(temp1+1)]
-        temp=int(temp2)
-        download_path=download_path+str(temp2)+")"
-    print(" "+download_path)
-    mkdir(download_path)
+
+while(path.exists(download_path)):
+    temp2=str(temp)
+    temp1=1
+    while(temp>=10):
+        temp1=temp1+1
+        temp=temp/10
+    temp=int(temp2)+1
+    download_path=download_path[:-(temp1+1)]
+    download_path=download_path+str(temp)+")"
+print(download_path)
+mkdir(download_path)
 temp=input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")
 while(temp!="1" and temp!="2"):
     print("please input 1 or 2")#highlight
@@ -166,7 +166,7 @@ def current_page_check():
 
 while True:
     if token==num:
-        print("mission completed")
+        print("crawling finished,waiting for download finished")
         break
     if j==76:        
         j=1
@@ -198,6 +198,11 @@ while True:
             comment_check()
             token=token+1
     j=j+1
+thread_stop=False
+for i in listdir(download_path):
+    while(i.endswith('.crdownload')):
+        sleep(2)
+thread_stop=True
 option.headless = False
 driver.get("chrome://downloads/")
 sleep(7) #wait for the download finish completely,if your internet is fast enough you can just delete this line
