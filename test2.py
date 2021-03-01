@@ -1,5 +1,7 @@
-temp=input("1 for yes/2 for no")
-while(temp!="1" or temp!="2"):
-    print("please input 1 or 2")
-    temp=input("1 for yes/2 for no")
-print(temp)
+from os import path
+from os import listdir
+from time import sleep
+for i in listdir("C:\\Users\\fre93\\Downloads\\downloads_of_sukebei-crawler (1)"):
+    while(i.endswith('.crdownload')):
+        sleep(2)
+        print("still find .crdownload")

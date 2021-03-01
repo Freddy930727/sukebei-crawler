@@ -12,21 +12,22 @@ readme v1 2020/2/21
 7.github:https://github.com/Freddy930727/sukebei-crawler ，有興趣的可以參考
 8.有問題的話可以email我(930727fre@gmail.com)，如果你跟我在同個群組，也可以直接私訊我
 
-animation 要修改(最後等待下載時還會用到)
+.md
+	animation 要修改(最後等待下載時還會用到)
 找機會測試crdownload sleep()
+等.crdownload 應該有更好的寫法
 page maximum 可能用按下下一頁的方法解決
 tr可能不是75個
 comment_check()可能有更好、更嚴謹的寫法
 You've exceeded the maximum number of pages. Please make your search query less broad.
 用txt比對下載過的檔案，避免重複下載
-torrent 也有可能bad gate，好像趕緊手動案返回就可以補救
+	torrent 也有可能bad gate，好像趕緊手動案返回就可以補救
 等待動畫應該完成了吧 但要確認exe時執行的狀況
 exe結束時好像會閃退
 參考國外文章的google extension 作法 他們選的vpn應該比較穩定
 pyinstaller 還有一些好東西，有空研究一下
 exe icon
 animation_stop 搞不好可以省略，但要看在python shell,exe介面時的狀況
-from import 可以參考cus_main 簡化
 cus_main需要大幅度更新
 
 未來更新目標:
