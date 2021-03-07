@@ -1,5 +1,6 @@
-auto-py-to-exe==2.8.0
-pip==21.0.1
-pyinstaller==4.2
 selenium==3.141.0
+configparser==5.0.2
+
+
+
 

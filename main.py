@@ -1,6 +1,7 @@
 from selenium import webdriver
 from time import sleep
 from os.path import abspath
+from os.path import exists
 from os import mkdir
 from os import listdir
 from os import startfile
@@ -12,8 +13,13 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import scrolledtext
+from configparser import ConfigParser
 #import chromedriver_autoinstaller
 #chromedriver_autoinstaller.install()#not functioning
+
+
+cf =ConfigParser()
+cf.read("setting.cfg")
 
 
 
@@ -47,6 +53,8 @@ def crawling(keyword,asktime,month,day,num,category,torrent_or_magnet):
         print("download path="+download_path)
         mkdir(download_path)
         """#if you want to download in the "downloads" file ,but it's not recommended
+        if(not exists(abspath(getcwd())+"\\downloads")):
+            mkdir(abspath(getcwd())+"\\downloads\\")
         download_path=abspath(getcwd())+"\\downloads\\"+datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
         mkdir(download_path)
         bulletin_text.insert("end","download_path:"+download_path+"\n")
@@ -202,61 +210,63 @@ def crawling(keyword,asktime,month,day,num,category,torrent_or_magnet):
 
 window=tk.Tk()
 window.title("sukebei_crawler")
-window.geometry("960x540")
+window.geometry("640x720")
 #window.attributes('-fullscreen', True)  
-window.configure(background='white')
+#window.configure(background='white')
 bulletin_text=scrolledtext.ScrolledText(window)
 
-def submit_button_fc():
-    """
-    bulletin_text.insert("end",keyword_entry.get()+" ")
-    bulletin_text.insert("end",month_entry.get()+" ")
-    bulletin_text.insert("end",day_entry.get()+" ")
-    bulletin_text.insert("end",torrents_entry.get()+" ")
-    bulletin_text.insert("end",str(category_var.get())+" ")
-    bulletin_text.insert("end",str(torrent_or_magnet.get())+" ")
-    """
-    if((len(month_entry.get())==0)or(int(month_entry.get())<13 and int(month_entry.get())>0)):
-        if(int(day_entry.get())<32 and int(day_entry.get())>0):
-            if(int(torrents_entry.get())==-1 or int(torrents_entry.get())>0):
-                submit_button["state"]="disabled"
-                if(len(keyword_entry.get())==0):
-                    temp=0
-                else:
-                    temp=keyword_entry.get()
-                if(len(month_entry.get())==0):
-                    temp1=False
-                    temp2=1
-                    temp3=1
-                else:
-                    temp1=True
-                    temp2=int(month_entry.get())
-                    temp3=int(day_entry.get())
-                crawling(temp,temp1,temp2,temp3,torrents_entry.get(),str(category_var.get()),str(torrent_or_magnet.get()))
-                bulletin_text.insert("end","all finished"+" ")
-                window.quit()
-                sleep(10)
-               #crawling(keyword,asktime,month,day,num,category,torrent_or_magnet)
-            else:
-                messagebox.showwarning("warning","please input a number which is greater than 0 or just input -1 in the torrents number label")
-        messagebox.showwarning("warning","please input a number between 1~12 in the day label")
-    else:
-        messagebox.showwarning("warning","please input a number between 1~12 in the month label")
-        
-        
-    
-torrent_or_magnet=tk.IntVar()
 
-
-category_var=tk.IntVar()
-
-keyword_label=tk.Label(window,text="keyword filter,(optional,if you leave it blank ,this program will crawl the most trending torrent)",bg="white",width=70,height=1)
 keyword_entry=tk.Entry(window)
-time_label=tk.Label(window,text="time filter",bg="white",width=15,height=1)
 month_entry=tk.Entry(window)
 day_entry=tk.Entry(window)
-torrents_label=tk.Label(window,text="quantity of torrents",bg="white",width=15,height=1)
 torrents_entry=tk.Entry(window)
+
+def execute_button_fc():
+    if(category_var.get()>=1 and category_var.get()<=6):
+        if(torrent_or_magnet.get()==1 or torrent_or_magnet.get()==2):
+            if((len(month_entry.get())==0 and len(day_entry.get())==0)or(day_entry.get()<13 and day_entry.get()>0) and imonth_entry.get()<13 and imonth_entry.get()>0):
+                if(len(torrents_entry.get())==0 or int(torrents_entry.get())>0):
+                    execute_button["state"]="disabled"
+                    if(len(keyword_entry.get())==0):
+                        temp=0
+                    else:
+                        temp=keyword_entry.get()
+                    if(len(month_entry.get())==0):
+                        temp1=False
+                        temp2=1
+                        temp3=1
+                    else:
+                        temp1=True
+                        temp2=int(month_entry.get())
+                        temp3=int(day_entry.get())
+                    if(len(torrents_entry.get())==0):
+                        temp4=-1
+                    else:
+                        temp4=torrents_entry.get()
+                    crawling(temp,temp1,temp2,temp3,temp4,str(category_var.get()),str(torrent_or_magnet.get()))
+                    bulletin_text.insert("end","all finished"+" ")
+                    execute_button["state"]="default"
+                    window.quit()
+                    sleep(10)
+                    #crawling(keyword,asktime,month,day,num,category,torrent_or_magnet)
+                else:
+                    messagebox.showwarning("warning","please input a greater than 0 in torrent quantity or just leave it blank  ")
+            else:
+                messagebox.showwarning("warning","please leave month and day filter blank simultaneously or input correctly")
+        else:
+            messagebox.showwarning("warning","please choose magnet link or torrent download")
+    else:
+        messagebox.showwarning("warning","please choose category")
+
+torrent_or_magnet=tk.IntVar()
+category_var=tk.IntVar()
+cf_open=open("setting.cfg", 'r')
+
+
+
+keyword_label=tk.Label(window,text="keyword filter,(optional,if you leave it blank ,this program will crawl the most trending torrent)",bg="white",width=70,height=1)
+time_label=tk.Label(window,text="time filter",bg="white",width=15,height=1)
+torrents_label=tk.Label(window,text="quantity of torrents",bg="white",width=15,height=1)
 category_label=tk.Label(window,text="category:",bg="white",width=15,height=1)
 category_radiobutton1=tk.Radiobutton(window,text="all categories",variable=category_var,value=1)
 category_radiobutton2=tk.Radiobutton(window,text="real life videos",variable=category_var,value=2)
@@ -264,11 +274,12 @@ category_radiobutton3=tk.Radiobutton(window,text="anime",variable=category_var,v
 category_radiobutton4=tk.Radiobutton(window,text="manga",variable=category_var,value=4)
 category_radiobutton5=tk.Radiobutton(window,text="pictures",variable=category_var,value=5)
 category_radiobutton6=tk.Radiobutton(window,text="doujinshi",variable=category_var,value=6)
-
 torrent_or_magnet_label=tk.Label(window,text="which way are you going to download torrent",bg="white",width=40,height=1)
-torrent_or_magnet_radiobutton1=tk.Radiobutton(window,text="download torrent",variable=torrent_or_magnet,value=1)#CheckButton
-torrent_or_magnet_radiobutton2=tk.Radiobutton(window,text="magnet link",variable=torrent_or_magnet,value=2)#CheckButton
-submit_button=tk.Button(window,text="submit button",command=submit_button_fc)
+torrent_or_magnet_radiobutton1=tk.Radiobutton(window,text="download torrent",variable=torrent_or_magnet,value=1)
+torrent_or_magnet_radiobutton2=tk.Radiobutton(window,text="magnet link",variable=torrent_or_magnet,value=2)
+execute_button=tk.Button(window,text="execute button",command=execute_button_fc)
+
+#notice_checkbutton.select()
 #pack()
 keyword_label.pack()
 keyword_entry.pack()
@@ -289,8 +300,17 @@ torrent_or_magnet_radiobutton1.pack()
 torrent_or_magnet_radiobutton2.pack()
 torrents_label.pack()
 torrents_entry.pack()
-submit_button.pack()
+execute_button.pack()
 bulletin_text.pack()
+"""
+if(cf.get("notice","notice_or_not")=="1"):
+    notice_massagebox=messagebox.showinfo("notice","don't forget to update chrome and chrome driver(please read readme.txt")
+"""
 
+"""
+canvas1 = tk.Canvas( window, width = 1280, height = 720) 
+canvas1.pack(fill = "both", expand = True)
+canvas1.create_image( 0, 0, image = tk.PhotoImage(file = "t6q9w-e403f.gif") ,anchor = "nw") 
+"""
 window.mainloop()
 

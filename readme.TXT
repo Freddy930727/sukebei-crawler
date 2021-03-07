@@ -14,7 +14,7 @@ readme v1 2020/2/21
 
 .md
 有些沒有torrent 可以下載
-如果沒有downloads folder,cfg,setting,-->mkdir
+if else 有型態的問題str int
 pyinstaller one directory ,then where should chrome driver locate(creat a short cut may be the solution to the problem)
 pyinstaller console window window based 
 檢查沒意義的print(先把該測試的check()測完)
@@ -22,7 +22,6 @@ pyinstaller console window window based
 找機會測試crdownload sleep()
 等.crdownload 應該有更好的寫法
 	page maximum 可能用按下下一頁的方法解決
-	tr可能不是75個
 comment_check()可能有更好、更嚴謹的寫法
 
 用txt比對下載過的檔案，避免重複下載
