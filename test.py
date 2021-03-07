@@ -1,21 +1,10 @@
-from configparser import ConfigParser
+import configparser
+config = configparser.ConfigParser()
 
-cf =ConfigParser()
-cf.read("setting.cfg")
 
-keyword=input("keyword?")
-if(not keyword in cf.sections()):
-    cf.add_section(keyword)
-
-for i in range(20):
-    cf.set(keyword,str(i),str(i*2))
-
-cf_open=open("setting.cfg", 'w')
-cf.write(cf_open)
-cf_open.close()
-
-print("finished")
-
+# 寫入 INI 檔案
+with open('example.ini', 'w') as configfile:
+  config.write(configfile)
 
 
 """
