@@ -1,21 +1,26 @@
 readme v1 2020/2/21
+重點:
+點main.exe就可以執行了
+如果防毒軟體刪除部分檔案，請關閉防火牆並直接重新解壓縮
+記得更新chrome,chrome driver(詳見注意事項)
+
 介紹:
 這個程式可以依照時間還有關鍵字去搜尋torrent(你也可以選擇不要使用篩選器，那程式就會以最多人下載的torrent去載)。因為這網站是以category去分種類(有真人影片,動畫,漫畫,寫真,同人誌這幾個)，如果你不太懂，程式問你要哪種category時你就回答all category的那個選項(回答1)。對了，我爬的這網站應該是我所知最多人在用、分類最整齊、廣告最少的網站(piratebay除外)，所以不用擔心速度太慢。
 
 注意事項:
 1.exe只有windows 64位元的電腦才能執行，我日後會處理(mac我不確定，因為我是用win10)
-2.chrome要更新到最新版本，開這個網站會自動更新chrome://settings/help
-3.chrome driver要更新到最新版本，去https://chromedriver.chromium.org/ ，找到符合你作業系統的下載下來，解壓縮，直到剩下一個叫chromedriver.exe的檔案，複製貼上到這份txt的資料夾，如果電腦問說要不要覆蓋掉舊的檔案，請按是。
+2.chrome要更新到最新版本，chrome開啟這個網站會自動更新chrome://settings/help
+3.chrome driver要更新到最新版本，去https://chromedriver.chromium.org/ ，找到符合你作業系統的下載下來(注意是穩定版本，不要下載到beta版)，解壓縮，直到剩下一個叫chromedriver.exe的檔案，複製貼上到這份資料夾，如果電腦問說要不要覆蓋掉舊的檔案，請按是。
+4.如果要用magnet link,請先把bt軟體詢問是否要下載的這種功能關掉，不然這軟體點擊magnet link會快到讓你電腦當掉，還有你也會按確認按到手痠
 4.家裡有色情守門員的人有兩種選擇，一個是電腦直接掛vpn，另外一個是用cus_main.exe ，這裡面會自動幫你連vpn，但問題是那vpn的速度很不穩定，有很高機率會失敗或斷線，所以建議用第一個方法
-5.防毒軟體會亂刪東西，解決方法就是把防毒軟體暫時關掉，並把被他刪掉的檔案還原或重新下載，如果他沒辦法還原你就重新解壓所吧。
-6.下載好torrent的位置如同你chrome下載預設的位置
+5.防毒軟體會亂刪東西，解決方法就是把防毒軟體暫時關掉，並把直接重新解壓縮吧。
+6.下載好的位置在這份資料夾的download中
 7.github:https://github.com/Freddy930727/sukebei-crawler ，有興趣的可以參考
 8.有問題的話可以email我(930727fre@gmail.com)，如果你跟我在同個群組，也可以直接私訊我
 
 .md
 有些沒有torrent 可以下載
-
-
+如果num=-1,何時該file.close()
 pyinstaller console window window based 
 檢查沒意義的print(先把該測試的check()測完)
 	page maximum 可能用按下下一頁的方法解決

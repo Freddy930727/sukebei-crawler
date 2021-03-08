@@ -4,35 +4,38 @@ from os import path
 from os import mkdir
 from os import listdir
 from os import startfile
-from os import getcwd
+import os
 from datetime import date
 from datetime import datetime
 from threading import Thread
-from pathlib import Path
-import configparser
-#import chromedriver_autoinstaller
-#chromedriver_autoinstaller.install()#not functioning
+#from pathlib import Path
+
+
+import chromedriver_autoinstaller
+chromedriver_autoinstaller.install()#not functioning
+
 magnet_link='1'
-cf=configparser.ConfigParser()
-if(not path.exists(path.abspath(getcwd())+"\\downloads")):
-    mkdir(path.abspath(getcwd())+"\\downloads")
-
-cf.read('history.ini')
-
-
-temp=input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")
+if(not path.exists(".\downloads")):
+    mkdir(".\downloads")
+if(not path.exists(".\history")):
+    mkdir(".\history")
+while(not path.exists(".\chromedriver.exe")):
+    print("please download latest version of chrome driver and put it in the same folder of this program(https://chromedriver.chromium.org/) ")
+    sleep(5)
+    
+print("don't forget to update your chrome and chrome driver if it's not working properly(refer to readme.txt)")
+temp=input("keyword filter ,1 for yes/2 for no(automatically search for torrent by  seeders)")
 while(temp!="1" and temp!="2"):
     print("please input 1 or 2")#highlight
-    temp=input("keyword filter ,1 for yes/2 for no(automatically search for maximum seeders torrent)")
+    temp=input("keyword filter ,1 for yes/2 for no(automatically search for torrent by  seeders)")
 if(temp=="1"):
-    keyword='"'+input("please input the keyword?")+'"'
+    keyword=input("please input the keyword?")
 else:
     keyword="0"
-    
-if(not (keyword in cf.sections())):
-    cf.add_section(keyword)
 
-
+file=open(".\history\\"+keyword+".txt","a+")
+previous_list=file.readlines()
+keyword='"'+keyword+'"'
 
 temp=input("time filter ,1 for yes /2 for no (search for all time)?")
 while(temp!="1" and temp!="2"):
@@ -42,10 +45,16 @@ if(temp=="1"):
     asktime=True
     date=str(date.today().year)+"-"
     month =int(input("which month is it?"))
+    while(month>12 or month<1):
+        print("month should be a integer between 1~12")
+        month =int(input("which month is it?"))
     if month<10:
         month="0"+str(month)
     month=str(month)
     day=int(input("which day is it?"))
+    while(month>31 or month<1):
+        print("date should be a integer between 1~31")
+        date =int(input("which date is it?"))
     if day<10:
         day="0"+str(day)
     day=str(day)
@@ -53,15 +62,14 @@ if(temp=="1"):
     print(date)
 else:
     asktime=False
-num = input("how many torrents do you require? if you don't have any idea please input -1,and it will crwal until you close the program manually")
+num = input("how many torrents do you require? ")
 num=int(num)
-while(num==0 or num<-1):
-    print("please input a number which is greater than 0 or just input -1")
-    num = input("how many torrents do you require? if you don't have any idea please input -1,and it will crwal until you close the program manually")
+while(num<1):
+    print("please input a number which is greater than 0")
+    num = input("how many torrents do you require?")
     num=int(num)
 
 current_list=['']*num
-print(len(current_list))
 
 
 
@@ -78,24 +86,7 @@ while(torrent_or_magnet!='1'and torrent_or_magnet!='2'):
     torrent_or_magnet=input("(1)download by .torrent (2)download by magnet")
 download_path='1'
 if(torrent_or_magnet=="1"):
-    """
-    download_path=str(path.join(Path.home(), "Downloads"))
-    temp=1
-    download_path=download_path+"\downloads_of_sukebei-crawler"+" ("+str(temp)+")"
-
-    while(path.exists(download_path)):
-        temp2=str(temp)
-        temp1=1
-        while(temp>=10):
-            temp1=temp1+1
-            temp=temp/10
-        temp=int(temp2)+1
-        download_path=download_path[:-(temp1+1)]
-        download_path=download_path+str(temp)+")"
-    print("download path="+download_path)
-    mkdir(download_path)
-    """#if you want to download in the "downloads" file ,but it's not recommended
-    download_path=path.abspath(getcwd())+"\\downloads\\"+datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
+    download_path=".\downloads\\"+datetime.now().strftime('%Y-%m-%d_%H_%M_%S')
     mkdir(download_path)
     print("download_path:"+download_path)
 url="https://sukebei.nyaa.si/"
@@ -120,15 +111,15 @@ def animation():
 def badway_check():
     if(url==driver.title):
         page=7
-        num=1
+        num=0
         return
     while not "Sukebei" in driver.title:
         driver.implicitly_wait(20)
         driver.get(url)
-        sleep(3)
+        sleep(2)
 def maximum_check():
     if not "Sukebei" in driver.title:
-        num=1#force stop crawling
+        num=0#force stop crawling
         return True
 
 Thread(target=animation).start()
@@ -139,7 +130,7 @@ option = webdriver.ChromeOptions()
 option.add_argument('blink-settings=imagesEnabled=false')
 prefs = {"download.default_directory" : download_path}
 option.add_experimental_option("prefs",prefs)
-driver = webdriver.Chrome(path.abspath('.\chromedriver.exe'), options=option)
+driver = webdriver.Chrome('.\chromedriver.exe', options=option)
 driver.implicitly_wait(20)
 driver.get(url)
 
@@ -191,6 +182,7 @@ def comment_check():
     if "comments" in driver.find_element_by_xpath(temp).get_attribute("title"):
         temp="//tr["+k+"]/td[2]/a[2]"
     return temp
+
 def current_page_check():
     while(url!=driver.current_url):
         sleep(2)
@@ -200,13 +192,13 @@ def history_check():
     temp="//tr["+k+"]/td[3]/a[2]"
     global magnet_link
     magnet_link=driver.find_element_by_xpath(temp).get_attribute("href")
-    if(magnet_link in cf.options(keyword) or magnet_link in current_list ):
+    if(magnet_link in previous_list or magnet_link in current_list ):
         return False
     else:
         return True
 
 while True:
-    if token==num:
+    if token>=num:#for badway_check compulsorily shut down
         break
     if tr== (1+(len(driver.find_elements_by_class_name("success"))+len(driver.find_elements_by_class_name("default")))):        
         tr=1
@@ -239,14 +231,13 @@ while True:
                 print(str(token+1)+". ",end = "")
                 print(driver.find_element_by_xpath(comment_check()).get_attribute("title"))#don't modify the order of previous three line(including this one)
                 current_list[token-1]=magnet_link
-                cf.set(keyword, magnet_link,str(1))
-                with open('history.ini', 'w') as f:
-                    cf.write(f)
+                
                 token=token+1
     tr=tr+1
 print("crawling finished")
 
-
+file.writelines(current_list)
+file.close()
 
 if(torrent_or_magnet=='1'):
     thread_stop=False
@@ -257,7 +248,7 @@ if(torrent_or_magnet=='1'):
             sleep(8)
     thread_stop=True
     print("download finished!")
-    startfile(path.abspath(download_path))
+    startfile(download_path)
 print("mission complete")
 #sleep(7) #wait for the download finish completely,if your internet is fast enough you can just delete this line
 

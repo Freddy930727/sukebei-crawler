@@ -1,11 +1,4 @@
-import configparser
-config = configparser.ConfigParser()
-
-
-# 寫入 INI 檔案
-with open('example.ini', 'w') as configfile:
-  config.write(configfile)
-
+import selenium
 
 """
 from selenium import webdriver
