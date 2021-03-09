@@ -59,7 +59,7 @@ if(temp=="1"):
         day="0"+str(day)
     day=str(day)
     date=date+month+"-"+day
-    print(date)
+    #print(date)
 else:
     asktime=False
 num = input("how many torrents do you require? ")
@@ -207,13 +207,12 @@ while True:
         while temp1>=10:
             temp=temp+1
             temp1=temp1/10
-        print(temp)
         url=url[:-(temp+3)]
         page=page+1   #flip the page
         url=url+"&p="+str(page)
         driver.get(url)
         badway_check()
-        print(url)
+        print("current crawling:"+url)
         if maximum_check() and num!=-1:
             print("i can only find "+str(token)+" torrents,there are "+str(num-token)+" left")
             break
@@ -247,7 +246,7 @@ if(torrent_or_magnet=='1'):
         if(i.endswith('.crdownload')):
             sleep(8)
     thread_stop=True
-    print("download finished!")
+    print("download finished")
     startfile(download_path)
 print("mission complete")
 #sleep(7) #wait for the download finish completely,if your internet is fast enough you can just delete this line

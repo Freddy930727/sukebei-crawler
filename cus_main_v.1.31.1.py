@@ -1,6 +1,0 @@
-options.add_extension(path.abspath('.\6.4.7_0.crx'))
-time.sleep(4)
-driver.get("chrome-extension://gjknjjomckknofjidppipffbpoekiipm/panel/index.html")
-time.sleep(4)
-driver.find_element_by_xpath("/html/body/div/div/div[3]/div[1]").click()
-time.sleep(4)
